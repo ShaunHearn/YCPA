@@ -1,7 +1,6 @@
-function [Ez_t, Ez_r, Ez, Hx, Hy] = ...
-    Yee2DEM(nx,ny,epi,mu,sigma,sigmaH,xMax,tsim,nSteps,Ez0,Hx0,Hy0,...
-    bc,pml,Plot,...
-    Reg,movie)
+function [Ez_t, Ez_r, Ez,Ez1_t, Ez1_r, Ez1, Hx, Hy, Hx1, Hy1] = ...
+    Yee2DEM(nx,ny,epi,mu,sigma,sigmaH,...
+    xMax,tsim,nSteps,Ez0,Hx0,Hy0,Ez1,Hx1,Hy1,bc,pml,Plot,Reg,movie)
 global c_eps_0 c_mu_0 c_c c_eta_0
 global simulationStopTimes;
 global mainTitle;
@@ -13,6 +12,7 @@ global Ez_output_r;
 global E0_input;
 
 global SurfHxLeft SurfHyLeft SurfEzLeft SurfHxRight SurfHyRight SurfEzRight;
+
 
 % subplot orientations
 if Plot.ori == '13'
@@ -70,6 +70,10 @@ for k = 1:Reg.n
     Hx{k} = Hx0{k};
     Hy{k} = Hy0{k};
     
+    Ez2{k} = Ez1{k};
+    Hx2{k} = Hx1{k};
+    Hy2{k} = Hy1{k};
+    
     %% pml
     
     pmlMax{k}=(0.8*(pml.m+1))./(sqrt(c_mu_0/c_eps_0)*ds*sqrt(mu{k}.*epi{k}./c_eps_0./c_mu_0));
@@ -112,13 +116,30 @@ for k = 1:Reg.n
     cxEz{k} = (1-bxEz{k})/ds;
     cyEz{k} = (1-byEz{k})/ds;
     
+    byHx2{k} = exp(-(pmlSigmay{k}.*dt/c_eps_0));
+    bxHy2{k} = exp(-(pmlSigmax{k}.*dt/c_eps_0));
+    bxEz2{k} = exp(-(pmlSigmax{k}.*dt/c_eps_0));
+    byEz2{k} = exp(-(pmlSigmay{k}.*dt/c_eps_0));
+    cyHx2{k} = (1-byHx2{k})/ds;
+    cxHy2{k} = (1-bxHy2{k})/ds;
+    cxEz2{k} = (1-bxEz2{k})/ds;
+    cyEz2{k} = (1-byEz2{k})/ds;
+    
     dHydx{k} = zeros(nx{k},ny{k});
     dHxdy{k} = zeros(nx{k},ny{k});
+    
+    dHydx2{k} = zeros(nx{k},ny{k});
+    dHxdy2{k} = zeros(nx{k},ny{k});
     
     QHxy{k} = zeros(nx{k},ny{k});
     QHyx{k} = zeros(nx{k},ny{k});
     QEyz{k} = zeros(nx{k},ny{k}-1);
     QExz{k} = zeros(nx{k}-1,ny{k});
+    
+    QHxy2{k} = zeros(nx{k},ny{k});
+    QHyx2{k} = zeros(nx{k},ny{k});
+    QEyz2{k} = zeros(nx{k},ny{k}-1);
+    QExz2{k} = zeros(nx{k}-1,ny{k});
     
     %% coeff
     Ca{k} = (1 - sigma{k}*dt./(2*epi{k}))./(1 + sigma{k}*dt./(2*epi{k}));

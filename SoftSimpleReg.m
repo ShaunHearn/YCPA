@@ -66,6 +66,9 @@ mu{1} = ones(nx{1},ny{1})*c_mu_0;
 % Sets the permativity
 epi{1} = ones(nx{1},ny{1})*c_eps_0;
 
+
+epi{1}(5:10,5:145)= c_eps_0*11.3;
+%{
 % Permitivity of the inner portion of the wave guide
 % left panels
 epi{1}(5:10,70:80)= c_eps_0*11.3;   
@@ -124,50 +127,7 @@ epi{1}(90:95,100:105)= c_eps_0*11.3;
 epi{1}(90:95,45:50)= c_eps_0*11.3;
 epi{1}(85:90,105:110)= c_eps_0*11.3;
 epi{1}(85:90,40:45)= c_eps_0*11.3;
-
-%{
-% center panel
-epi{1}(95:105,25:125)= c_eps_0*11.3;
-
-% right panels
-epi{1}(145:150,70:80)= c_eps_0*11.3;   
-epi{1}(140:145,80:85)= c_eps_0*11.3;
-epi{1}(140:145,65:70)= c_eps_0*11.3;
-epi{1}(135:140,85:90)= c_eps_0*11.3;
-epi{1}(135:140,60:65)= c_eps_0*11.3;
-epi{1}(130:135,90:95)= c_eps_0*11.3;
-epi{1}(130:135,55:60)= c_eps_0*11.3;
-epi{1}(125:130,95:100)= c_eps_0*11.3;
-epi{1}(125:130,50:55)= c_eps_0*11.3;
-epi{1}(120:125,100:105)= c_eps_0*11.3;
-epi{1}(120:125,45:50)= c_eps_0*11.3;
-epi{1}(115:120,105:110)= c_eps_0*11.3;
-epi{1}(115:120,40:45)= c_eps_0*11.3;
-epi{1}(110:115,110:115)= c_eps_0*11.3;
-epi{1}(110:115,35:40)= c_eps_0*11.3;
-
-
-epi{1}(190:195,70:80)= c_eps_0*11.3;   
-epi{1}(185:190,80:85)= c_eps_0*11.3;
-epi{1}(185:190,65:70)= c_eps_0*11.3;
-epi{1}(180:185,85:90)= c_eps_0*11.3;
-epi{1}(180:185,60:65)= c_eps_0*11.3;
-epi{1}(175:180,90:95)= c_eps_0*11.3;
-epi{1}(175:180,55:60)= c_eps_0*11.3;
-epi{1}(170:175,95:100)= c_eps_0*11.3;
-epi{1}(170:175,50:55)= c_eps_0*11.3;
-epi{1}(165:170,100:105)= c_eps_0*11.3;
-epi{1}(165:170,45:50)= c_eps_0*11.3;
-epi{1}(160:165,105:110)= c_eps_0*11.3;
-epi{1}(160:165,40:45)= c_eps_0*11.3;
-epi{1}(155:160,110:115)= c_eps_0*11.3;
-epi{1}(155:160,35:40)= c_eps_0*11.3;
 %}
-
-
-
-
-
 
 sigma{1} = zeros(nx{1},ny{1});
 sigmaH{1} = zeros(nx{1},ny{1});
@@ -190,7 +150,7 @@ Plot.pv = [0 0 90];
 Plot.reglim = [0 xMax{1} 0 yMax];
 
 % boundary Condiditons
-bc{1}.NumS = 1; % sets the solution to run in Yee2DEM
+bc{1}.NumS = 1; % sets the number unit cells
 bc{1}.s(1).xpos = nx{1}/(10) + 1; % SS position
 bc{1}.s(1).type = 'ss';
 bc{1}.s(1).fct = @PlaneWaveBC;
