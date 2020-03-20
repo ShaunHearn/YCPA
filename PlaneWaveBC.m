@@ -29,13 +29,10 @@ end
 if type == 's'
     if s && t > t0 || st == 0
         H = mag.*sin(omega*t + phi + x*betap);
-        H2 = mag.*sin(omega2*t + phi + x*betap);
     elseif st < 0 && t > t0
         H = mag.*sin(omega*t + phi + x*betap);
-        H2 = mag.*sin(omega2*t + phi + x*betap);
     else
         H = mag.*sin(omega*t + phi + x*betap)*exp(-((t-t0)/st)^n);
-        H2 = mag.*sin(omega2*t + phi + x*betap)*exp(-((t-t0)/st)^n);
     end
 elseif type == 'p'
     
@@ -49,7 +46,6 @@ end
 
     if stx ~= 0
         H = H.*exp(-((x-x0)/stx).^2);
-        H2 = H2.*exp(-((x-x0)/stx).^2);
     end
 % figure(1)
 % plot(x,H);

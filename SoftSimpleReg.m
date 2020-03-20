@@ -66,9 +66,6 @@ mu{1} = ones(nx{1},ny{1})*c_mu_0;
 % Sets the permativity
 epi{1} = ones(nx{1},ny{1})*c_eps_0;
 
-
-epi{1}(5:10,5:145)= c_eps_0*11.3;
-%{
 % Permitivity of the inner portion of the wave guide
 % left panels
 epi{1}(5:10,70:80)= c_eps_0*11.3;   
@@ -127,7 +124,7 @@ epi{1}(90:95,100:105)= c_eps_0*11.3;
 epi{1}(90:95,45:50)= c_eps_0*11.3;
 epi{1}(85:90,105:110)= c_eps_0*11.3;
 epi{1}(85:90,40:45)= c_eps_0*11.3;
-%}
+
 
 sigma{1} = zeros(nx{1},ny{1});
 sigmaH{1} = zeros(nx{1},ny{1});
@@ -150,22 +147,27 @@ Plot.pv = [0 0 90];
 Plot.reglim = [0 xMax{1} 0 yMax];
 
 % boundary Condiditons
-bc{1}.NumS = 1; % sets the number unit cells
+bc{1}.NumS = 2; % sets the number of sources
 bc{1}.s(1).xpos = nx{1}/(10) + 1; % SS position
 bc{1}.s(1).type = 'ss';
 bc{1}.s(1).fct = @PlaneWaveBC;
+
+bc{1}.s(2).xpos = nx{1}/(4) + 1; % SS position
+bc{1}.s(2).type = 'ss';
+bc{1}.s(2).fct = @PlaneWaveBC;
 % mag = -1/c_eta_0;
 mag = 1;
 phi = 0;
 omega = f*2*pi;
 betap = 0;
 t0 = 30e-15;
-%st = 15e-15;
-st = -0.5;
+st = 15e-15;
+%st = -0.05;
 s = 0;
 y0 = yMax/2;
 sty = 1.5*lambda;
 bc{1}.s(1).paras = {mag,phi,omega,betap,t0,st,s,y0,sty,'s'};
+bc{1}.s(2).paras = {mag,phi,omega,betap,t0,st,s,y0,sty,'s'};
 
 Plot.y0 = round(y0/dx);
 
