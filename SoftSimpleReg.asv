@@ -88,8 +88,8 @@ Plot.pv = [0 0 90];
 Plot.reglim = [0 xMax{1} 0 yMax];
 
 % boundary Condiditons
-bc{1}.NumS = 1;
-bc{1}.s(1).xpos = nx{1}/(4) + 1;
+bc{1}.NumS = 1; % sets the solution to run in Yee2DEM
+bc{1}.s(1).xpos = nx{1}/(4) + 1; % SS position
 bc{1}.s(1).type = 'ss';
 bc{1}.s(1).fct = @PlaneWaveBC;
 % mag = -1/c_eta_0;
@@ -106,21 +106,32 @@ bc{1}.s(1).paras = {mag,phi,omega,betap,t0,st,s,y0,sty,'s'};
 
 Plot.y0 = round(y0/dx);
 
-bc{1}.xm.type = 'a';
-bc{1}.xp.type = 'a';
-bc{1}.ym.type = 'a';
-bc{1}.yp.type = 'a';
+%{
+ Sets the soft source type:
+    a - sets up the PML
+    s - hard to H - reflects all incoming waves
+    e - explicit metasurface
+    m - magnetic wall (H = 0)
+    p - periodic
+%}
+bc{1}.xm.type = 'm';
+bc{1}.xp.type = 'm';
+bc{1}.ym.type = 'm';
+bc{1}.yp.type = 'm';
 
+% Perfectly Matched Layer (PML) sizing
 pml.width = 20 * spatialFactor;
 pml.m = 3.5;
 
-Reg.n  = 1;
-Reg.xoff{1} = 0;
-Reg.yoff{1} = 0;
+Reg.n  = 1; % number of regions
+Reg.xoff{1} = 0;    % used for simulation surface in Yee2DEM
+Reg.yoff{1} = 0;    % used for simulation surface in Yee2DEM
 
 %{
 This calls up the function RunYeeReg.  RunYeeReg initializes the E and H
-fields, then calls Y
+fields, then calls Yee2DEM.  Yee2DEM updates the E and H fields (in
+alternate time steps - E integer time steps, H half integer time steps)
+and takes into consideration the Soft Source (SS) type.
 %}
 RunYeeReg
 

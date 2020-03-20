@@ -65,7 +65,10 @@ mu{1} = ones(nx{1},ny{1})*c_mu_0;
 epi{1} = ones(nx{1},ny{1})*c_eps_0;
 
 % Permitivity of the inner portion of the wave guide
-epi{1}(125:150,55:95)= c_eps_0*11.3;        
+epi{1}(20:45,25:125)= c_eps_0*11.3;   
+epi{1}(65:90,25:125)= c_eps_0*11.3;
+epi{1}(110:135,25:125)= c_eps_0*11.3;
+epi{1}(155:180,25:125)= c_eps_0*11.3;
 
 sigma{1} = zeros(nx{1},ny{1});
 sigmaH{1} = zeros(nx{1},ny{1});
@@ -98,7 +101,8 @@ phi = 0;
 omega = f*2*pi;
 betap = 0;
 t0 = 30e-15;
-st = 15e-15;
+%st = 15e-15;
+st = -0.05;
 s = 0;
 y0 = yMax/2;
 sty = 1.5*lambda;
